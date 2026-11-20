@@ -430,3 +430,15 @@ html.a11y-nomotion [class*="reveal"], html.a11y-nomotion .js [data-reveal] { opa
 .social .soc-linkedin { background: #0A66C2; }
 .social .soc-threads { background: #000; }
 .social .soc-linkedin svg { width: 17px; height: 17px; }
+
+/* ---------- פופ אפ ---------- */
+.popup { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 1rem; background: rgba(47, 38, 30, .55); }
+.popup[hidden] { display: none; }
+.popup-card { position: relative; width: min(30rem, 100%); max-height: 90vh; overflow: auto; background: var(--cream); color: var(--brown); border: 2px solid var(--sage-deep); border-radius: 1.25rem; padding: 2rem 1.75rem 1.75rem; box-shadow: 0 18px 50px rgba(47, 38, 30, .35); }
+.popup-card h2 { margin: 0 0 .6rem; padding-inline-end: 2.5rem; }
+.popup-card p { margin: 0; }
+.popup-x { position: absolute; inset-block-start: .6rem; inset-inline-end: .6rem; width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--brown); font-size: 1.8rem; line-height: 1; cursor: pointer; }
+.popup-x:hover { background: var(--linen); }
+@media (prefers-reduced-motion: no-preference) { .popup-card { animation: popup-in .25s ease-out; } @keyframes popup-in { from { opacity: 0; transform: translateY(10px); } } }
+html.a11y-nomotion .popup-card { animation: none; }
+body.popup-open { overflow: hidden; }

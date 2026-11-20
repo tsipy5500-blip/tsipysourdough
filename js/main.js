@@ -110,3 +110,37 @@
   });
   render();
 })();
+
+/* ---------- פופ אפ: מופיע פעם אחת בכל ביקור, נגיש ממקלדת וקורא מסך ---------- */
+(function () {
+  var pop = document.getElementById('site-popup');
+  if (!pop) return;
+  var KEY = 'tzipi-popup-seen';
+  try { if (sessionStorage.getItem(KEY)) return; } catch (e) { /* בלי אחסון, יוצג שוב בטעינה הבאה */ }
+  var opener = null;
+  var focusables = function () { return pop.querySelectorAll('a[href], button:not([disabled])'); };
+  function close() {
+    pop.hidden = true;
+    document.body.classList.remove('popup-open');
+    document.removeEventListener('keydown', onKey);
+    try { sessionStorage.setItem(KEY, '1'); } catch (e) { /* בסדר */ }
+    if (opener && opener.focus) opener.focus();
+  }
+  function onKey(e) {
+    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key !== 'Tab') return;
+    var f = focusables(); if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+  function open() {
+    opener = document.activeElement;
+    pop.hidden = false;
+    document.body.classList.add('popup-open');
+    document.addEventListener('keydown', onKey);
+    var f = focusables(); if (f.length) f[0].focus();
+  }
+  pop.addEventListener('click', function (e) { if (e.target === pop || e.target.closest('[data-popup-close]')) close(); });
+  setTimeout(open, 4000);
+})();
